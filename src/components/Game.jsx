@@ -3,38 +3,34 @@ import Board from "./Board";
 import styles from "../styles/Game.module.css";
 
 import { calculateWinnerDynamic } from "../calculatewinnerdynamic";
+import { calculateCustomWinner } from "../calculatecustomdynamicwin";
 
 const Game = () => {
 
-  // to show dynamic win or custom win
-  const [dynamicShow,setDynamicShow] = useState(true) 
-  const [customWin, setCustomWin] = useState();
+  // for music
+  let audio = new Audio('/music/Ting.mp3')
+  let winnerMusic = new Audio('/music/winner.mp3')
+
+  const [customWin, setCustomWin] = useState(0);
 
   const refs = useRef(null);
   const refs1 = useRef(null);
+  const refs2 = useRef(null);
 
-  const [rowInputVal, setRowInputVal] = useState(3);
-
-  const [col, setCol] = useState(3);
-  const [columnInputVal, setColumnInputVal] = useState(col);
+  const [rowInputVal, setRowInputVal] = useState(3)
+  const [columnInputVal, setColumnInputVal] = useState(3);
 
   const [board, setBoard] = useState(Array(9).fill(null));
-  if(dynamicShow == true){
-
-    var winner = calculateWinnerDynamic(rowInputVal, board);
-  }
-  else{
-    var winner = calculateWinnerDynamic(customWin, board);
-
-  }
+  // let winner = calculateWinnerDynamic(rowInputVal, board, customWin);
+  let winner = calculateCustomWinner(rowInputVal, board, customWin);
+  
+  const [history, setHistory] = useState([]);
   const [xIsNext, setXisNext] = useState(true);
+  const [playerXColor, setPlayerXColor] = useState("grey");
+  const [playerYColor, setPlayerYColor] = useState("pink");
 
   const rowHandler = (e) => {
-    if (
-      e.target.value == 0 ||
-      e.target.value == null ||
-      e.target.value == undefined
-    ) {
+    if (e.target.value == 0) {
       setRowInputVal(3);
     } else {
       setRowInputVal(Number(e.target.value));
@@ -42,39 +38,29 @@ const Game = () => {
   };
 
   const columnHandler = (e) => {
-    if (
-      e.target.value == 0 ||
-      e.target.value == null ||
-      e.target.value == undefined
-    ) {
+    if (e.target.value == 0) {
       setColumnInputVal(3);
     } else {
-      setCol(Number(e.target.value));
+      setColumnInputVal(Number(e.target.value));
     }
   };
 
-  const [history, setHistory] = useState([]);
+  const customWinInputHandler = (e) => {
+    setCustomWin(Number(e.target.value));
+  };
 
-  const handleClick = (i) => {
+
+  const handleBoxClick = (i) => {
+     audio.play()
     const boardCopy = [...board];
     // If user click an occupied square or if game is won, return
     if (winner || boardCopy[i]) return;
     // Put an X or an O in the clicked square
-  
-      if(dynamicShow == true){
-        const boardCopy = [...board];
-        boardCopy[i] = xIsNext ? "X" : "O";
-        setBoard(boardCopy);
-        setXisNext(!xIsNext)
-      }
-      else{
-        const boardCopy = [...board];
-        boardCopy[i] = xIsNext ? "X" : "O";
-        setBoard(boardCopy);
-        setXisNext(!xIsNext)
-      }
-
+    boardCopy[i] = xIsNext ? "X" : "O";
+    setBoard(boardCopy);
+    setXisNext(!xIsNext);
     setHistory([...history, boardCopy]);
+
   };
 
   const handleHistoryClick = (arr, index) => {
@@ -89,8 +75,11 @@ const Game = () => {
     if (ele !== null) {
       return (
         <li key={index}>
-          <button onClick={() => handleHistoryClick(ele, index)}>
-            go to move {index}
+          <button 
+          onClick={() => handleHistoryClick(ele, index)}
+          className="btn btn-sm btn-dark mb-2"
+          >
+            go to move
           </button>
           {ele}
         </li>
@@ -99,37 +88,22 @@ const Game = () => {
   });
 
   const resetButtonHandler = () => {
-    refs.current.value = "";
-    refs1.current.value = "";
+    
+    setCustomWin(0);
     setColumnInputVal(3);
     setRowInputVal(3);
     setBoard(Array(9).fill(null));
-    setHistory(board);
+    setHistory(Array(9).fill(null));
     setXisNext(!xIsNext);
-    setCustomWin(0)
   };
 
   const applyClickHandler = () => {
     refs.current.value = "";
     refs1.current.value = "";
-    setColumnInputVal(col);
+    refs2.current.value = "";
 
-    if(customWin == undefined || customWin == null || customWin == 0){
-      setBoard(Array(rowInputVal * columnInputVal).fill(null));
-      setDynamicShow(true)
-    }
-    else{
-      setBoard(Array(customWin * customWin).fill(null));
-      setDynamicShow(false)
-    }
-
-  };
-
-  const [playerXColor, setPlayerXColor] = useState("white");
-  const [playerYColor, setPlayerYColor] = useState("red");
-
-  const customWinInputHandler = (e) => {
-    setCustomWin(Number(e.target.value));
+    setBoard(Array(rowInputVal * columnInputVal).fill(null));
+     
   };
 
 
@@ -162,12 +136,12 @@ const Game = () => {
             className="form-control"
           />
 
-         <label htmlFor="">Select Custom Win :</label>
+          <label htmlFor="">Select Custom Win :</label>
 
-         <input
+          <input
             min={0}
             name="column"
-            ref={refs1}
+            ref={refs2}
             onChange={customWinInputHandler}
             type="number"
             className="form-control"
@@ -196,8 +170,8 @@ const Game = () => {
         playerY={playerYColor}
         colBox={columnInputVal}
         rowBox={rowInputVal}
-        squares={dynamicShow?board: Array(columnInputVal * rowInputVal).fill(null)}
-        onClick={handleClick}
+        squares={board}
+        onClick={handleBoxClick}
       />
       <div className="d-flex my-2">
         <label className="mx-2">Player X:</label>
@@ -212,7 +186,7 @@ const Game = () => {
           style={{ backgroundColor: xIsNext ? playerXColor : playerYColor }}
         >
           {winner
-            ? winner == "draw"
+            ?  winnerMusic.play() && winner == "draw"
               ? winner
               : "Winner: " + winner
             : "Next Player: " + (xIsNext ? "X" : "O")}
