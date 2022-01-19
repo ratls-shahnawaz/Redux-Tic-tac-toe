@@ -1,25 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import Square from "./Square";
 import styles from "../styles/Board.module.css";
-import { calculateWinnerDynamic } from "../calculatewinnerdynamic";
 
-const Board = ({ squares, onClick, colBox, rowBox, playerX, playerY }) => {
+import { useSelector, useDispatch } from "react-redux";
+
+const Board = ({ onClick, playerX, playerY }) => {
+  
+  const rowInputValR = useSelector((state)=> state.tictactoe.rowInputVal)
+  const columnInputValR = useSelector((state)=> state.tictactoe.columnInputVal)
+  const boardRedux = useSelector((state) => state.tictactoe.board);
+
   const [color, setColor] = useState("white");
-  // const Refs = useRef(null);
 
-  const [customWin, setCustomWin] = useState();
-
-  const customWinInputHandler = (e) => {
-    setCustomWin(Number(e.target.value));
-  };
-
-  // const applyClickHandler = () => {
-  //   Refs.current.value = "";
-  //   calculateWinnerDynamic(
-  //     dynamicWin,
-  //     Array(dynamicWin * dynamicWin).fill(null)
-  //   );
-  // };
 
   return (
     <>
@@ -39,11 +31,11 @@ const Board = ({ squares, onClick, colBox, rowBox, playerX, playerY }) => {
         <div
           style={{
             backgroundColor: color,
-            gridTemplate: `repeat(${rowBox}, 0fr) / repeat(${colBox}, 0fr)`,
+            gridTemplate: `repeat(${rowInputValR}, 0fr) / repeat(${columnInputValR}, 0fr)`,
           }}
           className={`${styles.board}`}
         >
-          {squares.map((ele, i) => (
+          {boardRedux.map((ele, i) => (
             <Square
               playerX={playerX}
               playerY={playerY}
