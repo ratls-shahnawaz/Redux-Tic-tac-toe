@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const initialState = {
   board: Array(9).fill(null),
-  customWin: 0,
+  customWin: 3,
   rowInputVal: 3,
   columnInputVal: 3,
   history: [],
@@ -30,6 +30,8 @@ export const counterSlice = createSlice({
       state.board = action.payload
     },
     setHistoryR:(state,action)=>{
+      // debugger;
+      console.log('history-=-=->>>',action.payload)
       state.history = action.payload
       // state.history = state.history.splice(state.history,action.payload)
     },

@@ -1,33 +1,39 @@
-.board{
-  
-	border-radius: 10px;
-	/* display: grid; */
-	
-	display: inline-grid;
-	
-	justify-content: center;
-	align-items: center;
-	grid-auto-columns: 200px!important;
-	
+.board {
+  border-radius: 10px;
+  /* display: grid; */
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+  grid-auto-columns: 200px !important;
 }
 
-.heartbeatPara{
-    font-size: 25px;
-	color: red;
-	animation: beat .40s infinite alternate;
-	transform-origin: center;
-    /* display: inline-block; */
-    background-color: transparent!important;
-    text-align: center;
+.heartbeatPara {
+  font-size: 25px;
+  color: red;
+  animation: beat 0.4s infinite alternate;
+  transform-origin: center;
+  /* display: inline-block; */
+  background-color: transparent !important;
+  text-align: center;
 }
-@keyframes beat{
-	to { transform: scale(0.2); }
+@keyframes beat {
+  to {
+    transform: scale(0.2);
+  }
 }
 
-.nextplayerDiv{
-    border: 1px solid green;
-    display: inline-block;
-    padding: 4px;
-    margin: 8px;
-    /* background-color: red; */
+.nextplayerDiv {
+  border: 1px solid green;
+  display: inline-block;
+  padding: 4px;
+  margin: 8px;
+  /* background-color: red; */
+}
+
+.boardMain{
+	height: 100vh;
+	flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

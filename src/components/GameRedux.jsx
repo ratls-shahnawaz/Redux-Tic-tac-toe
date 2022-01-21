@@ -41,17 +41,8 @@ const Game = () => {
     dispatch(setCustomWinR(Number(e.target.value)));
   };
 
-  const resetButtonHandler = () => {
-    dispatch(setCustomWinR(0));
-    dispatch(setRowInputValR(3));
-    dispatch(setColumnInputValR(3));
-
-    dispatch(setBoardR(Array(9).fill(null)));
-    dispatch(setHistoryR(Array(9).fill(null)));
-    dispatch(setNextPlayerTurn(!xIsNext));
-  };
-
   const applyClickHandler = () => {
+    
     refs.current.value = "";
     refs1.current.value = "";
     refs2.current.value = "";
@@ -66,12 +57,11 @@ const Game = () => {
 
   return (
     <>
-        <h3 className="text-center bg-warning py-2">
-          Welcome !! Tic Tac Toe Game
-        </h3>
+      <h3 className="text-center bg-warning py-2">
+        Welcome !! Tic Tac Toe Game
+      </h3>
       <div className={`${styles.game}`}>
         <div className="bg-dark text-warning rounded p-4 col-md-6">
-         
           <label className="text-start" for="cars">
             Choose Number of Rows:
           </label>
@@ -110,21 +100,13 @@ const Game = () => {
           <p className="text-danger mt-2">{errMsg}</p>
 
           <button
-            className="btn btn-sm btn-outline-light me-3 mt-2"
+            className="btn btn-warning me-3 mt-2"
             onClick={applyClickHandler}
           >
             Apply
           </button>
 
-          <button
-            className="btn btn-sm btn-light mt-2"
-            onClick={resetButtonHandler}
-          >
-            Reset
-          </button>
-         
         </div>
-        
       </div>
     </>
   );

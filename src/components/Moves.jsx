@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import {
   setPlayerXColor,
   setPlayerYColor,
@@ -9,22 +9,21 @@ import {
   setColumnInputValR,
   setBoardR,
   setHistoryR,
-  setNextPlayerTurn
+  setNextPlayerTurn,
 } from "../reducers/reducer";
 const Moves = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const historyR = useSelector((state) => state.tictactoe.history);
-  const xIsNext = useSelector(state=> state.tictactoe.nextPlayerTurn)
-
+  const xIsNext = useSelector((state) => state.tictactoe.nextPlayerTurn);
 
   const handleHistoryClick = (arr, index) => {
     dispatch(setBoardR(arr));
-    const showHistory = historyR.splice(historyR,index+1)
+    const showHistory = [...historyR].splice(historyR, index + 1);
+    // dispatch(setHistoryR(index+1));
     dispatch(setHistoryR(showHistory));
-    // dispatch(setHistoryR(index + 1))
-    dispatch(setNextPlayerTurn(!xIsNext))
+    
+    dispatch(setNextPlayerTurn(!xIsNext));
   };
 
   const moves = historyR.map((ele, index) => {
@@ -35,22 +34,34 @@ const Moves = () => {
             onClick={() => handleHistoryClick(ele, index)}
             className="btn btn-sm btn-dark mb-2"
           >
-           
             <Link to="/board"> go to move</Link>
+            {/* go to move */}
           </button>
-          {ele}
+          {/* {ele} */}
         </li>
       );
     }
   });
 
   return (
-    <div>
-      <h1> All moves history</h1>
+    <div className="text-center">
+      <div className="bg-dark text-light py-2 d-flex justify-content-center align-items-center">
+        <h3 > All moves history</h3>
 
-      <p>
-      {historyR ? <ol>{moves}</ol> : null}
-      </p>
+        <button className="btn btn-sm btn-outline-warning mx-3">
+          <Link style={{ textDecoration: "none" }} to="/">
+            Home
+          </Link>
+        </button>
+        <button className="btn btn-sm btn-warning">
+          <Link style={{ textDecoration: "none" }} to="/board">
+            Board
+          </Link>
+        </button>
+      </div>
+
+      <br />
+      {historyR ? <ol className="d-inline-block">{moves}</ol> : null}
     </div>
   );
 };
