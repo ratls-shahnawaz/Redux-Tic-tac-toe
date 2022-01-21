@@ -7,6 +7,9 @@ const initialState = {
   rowInputVal: 3,
   columnInputVal: 3,
   history: [],
+  playerXColor:'grey',
+  playerYColor:'pink',
+  nextPlayerTurn:true
 };
 
 export const counterSlice = createSlice({
@@ -28,11 +31,18 @@ export const counterSlice = createSlice({
     },
     setHistoryR:(state,action)=>{
       state.history = action.payload
+      // state.history = state.history.splice(state.history,action.payload)
+    },
+    setPlayerXColor:(state,action)=>{
+      state.playerXColor = action.payload
+    },
+    setPlayerYColor:(state,action)=>{
+      state.playerYColor = action.payload
+    },
+    setNextPlayerTurn:(state,action)=>{
+      state.nextPlayerTurn = action.payload
     },
 
-    getRemoveFunction: (state, action) => {
-      state.task = action.payload.splice(0, action.payload.length);
-    },
   },
 });
 
@@ -44,6 +54,10 @@ export const {
   setColumnInputValR,
   setBoardR,
   setHistoryR,
-  getRemoveFunction } = counterSlice.actions;
+  setPlayerXColor,
+  setPlayerYColor,
+  setNextPlayerTurn,
+  
+ } = counterSlice.actions;
 
 export default counterSlice.reducer;

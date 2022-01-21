@@ -1,3 +1,4 @@
+
 .heartbeatPara{
     font-size: 25px;
 	color: red;
@@ -17,11 +18,4 @@
     padding: 4px;
     margin: 8px;
     /* background-color: red; */
-}
-
-.game{
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
